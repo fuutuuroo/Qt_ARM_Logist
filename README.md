@@ -157,7 +157,7 @@ private:
 #endif // ITEMCOUNTWINDOW_H
 ```
 report.h
-```
+```Qt
 #ifndef REPORT_H
 #define REPORT_H
 
