@@ -119,4 +119,75 @@ private:
 #endif // MAINWINDOW_H
 ```
 itemcountwindow.h
+```C++
+#ifndef ITEMCOUNTWINDOW_H
+#define ITEMCOUNTWINDOW_H
 
+#include <QDialog>
+#include "item.h"
+#include "report.h"
+
+namespace Ui {
+class ItemCountWindow;
+}
+
+class ItemCountWindow : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit ItemCountWindow(QWidget *parent = nullptr);
+    ~ItemCountWindow();
+    void fillTableCount(int);
+    QString vectorName;
+    QString vectorID;
+
+private slots:
+    void on_pushButtonClose_clicked();
+    void on_tableItemCount_cellClicked(int row, int column);
+
+private:
+    Ui::ItemCountWindow *ui;
+    Item *item;
+    report *reportWind;
+    void addReport();
+
+};
+
+#endif // ITEMCOUNTWINDOW_H
+```
+report.h
+```
+#ifndef REPORT_H
+#define REPORT_H
+
+#include <QDialog>
+#include <QMessageBox>
+
+
+namespace Ui {
+class report;
+}
+
+class report : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit report(QWidget *parent = nullptr);
+    ~report();
+    QString reportName;
+    QString reportID;
+    void setInfo();
+
+private slots:
+    void on_pushSend_clicked();
+    void on_pushClose_clicked();
+
+private:
+    Ui::report *ui;
+
+};
+
+#endif // REPORT_H
+```
