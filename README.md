@@ -35,7 +35,9 @@
 будет позже
 # Cтруктурированный исходный код проекта с подробными комментариями
 ### Заголовочные файлы
-item.h
+<details>
+    <summary>item.h</summary>
+    
 ```C++
 #ifndef ITEM_H
 #define ITEM_H
@@ -67,7 +69,12 @@ public:
 
 #endif // ITEM_H
 ```
-mainwindow.h
+
+</details>
+<br>
+<details>
+    <summary>mainwindow.h</summary>
+    
 ```C++
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
@@ -119,7 +126,12 @@ private:
 
 #endif // MAINWINDOW_H
 ```
-itemcountwindow.h
+    
+</details>
+<br>
+<details>
+    <summary>itemcountwindow.h</summary>
+
 ```C++
 #ifndef ITEMCOUNTWINDOW_H
 #define ITEMCOUNTWINDOW_H
@@ -157,6 +169,10 @@ private:
 
 #endif // ITEMCOUNTWINDOW_H
 ```
+
+</details>
+<br>
+    
 report.h
 ```C++
 #ifndef REPORT_H
@@ -192,7 +208,7 @@ private:
 
 #endif // REPORT_H
 ```
-### Иходники
+### Иcходные файлы
 main.cpp
 ```C++
 #include "mainwindow.h"
