@@ -72,7 +72,6 @@ public:
 ```
 
 </details>
-<br>
 <details>
     <summary>mainwindow.h</summary>
     
@@ -129,7 +128,6 @@ private:
 ```
     
 </details>
-<br>
 <details>
     <summary>itemcountwindow.h</summary>
 
@@ -172,7 +170,6 @@ private:
 ```
 
 </details>
-<br>
 <details>
     <summary>report.h</summary>    
 
@@ -233,7 +230,6 @@ int main(int argc, char *argv[])
 ```
 
 </details>
-<br> 
 <details>
     <summary>item.cpp</summary>    
 
@@ -362,7 +358,6 @@ int Item::get_rand_count(int seed, int min, int max) {
 ```
     
 </details>
-<br> 
 <details>
     <summary>mainwindow.cpp</summary> 
 
@@ -634,7 +629,6 @@ QString MainWindow::send_vector_id(int i) {
 ```
     
 </details>
-<br> 
 <details>
     <summary>itemcountwindow.cpp</summary> 
 
@@ -725,7 +719,6 @@ void ItemCountWindow::on_tableItemCount_cellClicked(int row, int column)
 ```
     
 </details>
-<br> 
 <details>
     <summary>report.cpp</summary>
 
@@ -763,7 +756,9 @@ void report::setInfo() {                //функция для записи и�
 ```
     
 </details>
+    
 ### Формы
+    
 <details>
     <summary>mainwindow.ui</summary>
 
@@ -1013,7 +1008,6 @@ void report::setInfo() {                //функция для записи и�
 ```
     
 </details>
-<br> 
 <details>
     <summary>itemcountwindow.ui</summary>
 
@@ -1069,7 +1063,6 @@ void report::setInfo() {                //функция для записи и�
 ```
     
 </details>
-<br> 
 <details>
     <summary>report.ui</summary>
 
