@@ -211,7 +211,6 @@ private:
 ```
     
 </details>
-<br>    
 ### Иcходные файлы
 <details>
     <summary>main.cpp</summary>    
@@ -761,7 +760,6 @@ void report::setInfo() {                //функция для записи и�
 ```
     
 </details>
-<br> 
 ### Формы
 <details>
     <summary>mainwindow.ui</summary>
