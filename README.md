@@ -172,8 +172,9 @@ private:
 
 </details>
 <br>
-    
-report.h
+<details>
+    <summary>report.h</summary>    
+
 ```C++
 #ifndef REPORT_H
 #define REPORT_H
@@ -208,8 +209,13 @@ private:
 
 #endif // REPORT_H
 ```
+    
+</details>
+<br>    
 ### Иcходные файлы
-main.cpp
+<details>
+    <summary>main.cpp</summary>    
+
 ```C++
 #include "mainwindow.h"
 #include <QApplication>
@@ -223,7 +229,12 @@ int main(int argc, char *argv[])
     return a.exec();
 }
 ```
-item.cpp
+
+</details>
+<br> 
+<details>
+    <summary>item.cpp</summary>    
+
 ```C++
 #include "item.h"
 
@@ -347,7 +358,12 @@ int Item::get_rand_count(int seed, int min, int max) {
     return (qrand() % ((max + 1) - min) + min);
 }
 ```
-mainwindow.cpp
+    
+</details>
+<br> 
+<details>
+    <summary>mainwindow.cpp</summary> 
+
 ```C++
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -614,7 +630,12 @@ QString MainWindow::send_vector_id(int i) {
     return vectorItems[i].get_id();
 }
 ```
-itemcountwindow.cpp 
+    
+</details>
+<br> 
+<details>
+    <summary>itemcountwindow.cpp</summary> 
+
 ```C++
 #include "itemcountwindow.h"
 #include "ui_itemcountwindow.h"
@@ -700,6 +721,9 @@ void ItemCountWindow::on_tableItemCount_cellClicked(int row, int column)
     }
 }
 ```
+    
+</details>
+<br> 
 report.cpp
 ```C++
 #include "report.h"
