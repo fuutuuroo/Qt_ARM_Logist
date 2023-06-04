@@ -724,7 +724,9 @@ void ItemCountWindow::on_tableItemCount_cellClicked(int row, int column)
     
 </details>
 <br> 
-report.cpp
+<details>
+    <summary>report.cpp</summary>
+
 ```C++
 #include "report.h"
 #include "ui_report.h"
@@ -757,8 +759,13 @@ void report::setInfo() {                //функция для записи и�
     ui->labelID->setText("id: " + reportID);
 }
 ```
+    
+</details>
+<br> 
 ### Формы
-mainwindow.ui
+<details>
+    <summary>mainwindow.ui</summary>
+
 ```html
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
@@ -1003,7 +1010,12 @@ mainwindow.ui
  <connections/>
 </ui>
 ```
-itemcountwindow.ui
+    
+</details>
+<br> 
+<details>
+    <summary>itemcountwindow.ui</summary>
+
 ```html
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
@@ -1054,7 +1066,12 @@ itemcountwindow.ui
  <connections/>
 </ui>
 ```
-report.ui
+    
+</details>
+<br> 
+<details>
+    <summary>report.ui</summary>
+
 ```html
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
@@ -1173,3 +1190,6 @@ report.ui
  <connections/>
 </ui>
 ```
+    
+</details>
+<br> 
