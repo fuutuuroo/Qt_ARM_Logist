@@ -16,9 +16,7 @@ class ItemCountWindow : public QDialog
 public:
     explicit ItemCountWindow(QWidget *parent = nullptr);
     ~ItemCountWindow();
-
     void fillTableCount(int);
-
     QString vectorName;
     QString vectorID;
 
@@ -29,7 +27,6 @@ private slots:
 private:
     Ui::ItemCountWindow *ui;
     Item *item;
-
     report *reportWind;
     void addReport();
 

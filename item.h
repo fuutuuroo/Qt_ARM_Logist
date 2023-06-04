@@ -15,16 +15,14 @@ private:
 public:
     Item();
     ~Item();
-
     QString get_name();
     QString get_id();
+    QString rand_id();
     void set_name(QString);
     void set_id(QString);
-
-    QString rand_id();
     int get_size();
-    QVector<Item> set_vector_of_items();
     int get_rand_count(int, int, int);
+    QVector<Item> set_vector_of_items();
 
 };
 

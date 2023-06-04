@@ -16,16 +16,12 @@ class report : public QDialog
 public:
     explicit report(QWidget *parent = nullptr);
     ~report();
-
     QString reportName;
     QString reportID;
-
     void setInfo();
 
 private slots:
-
     void on_pushSend_clicked();
-
     void on_pushClose_clicked();
 
 private:

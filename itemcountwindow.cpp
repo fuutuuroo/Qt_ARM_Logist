@@ -2,14 +2,12 @@
 #include "ui_itemcountwindow.h"
 #include "item.h"
 
-
 ItemCountWindow::ItemCountWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ItemCountWindow)
 {
     ui->setupUi(this);
     setWindowTitle("Наличие товара в городах");
-
 }
 
 ItemCountWindow::~ItemCountWindow()

@@ -4,7 +4,6 @@ Item::Item() {}
 
 Item::~Item() {}
 
-
 QString Item::get_name() {
     return name;
 }

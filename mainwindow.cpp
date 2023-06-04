@@ -8,13 +8,13 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
     setWindowTitle("АРМ логиста в телекоммуникационной компании");
     ui->tableItems->setRowCount(item->get_size());      //указание кол-ва строк в зависимости от массива наименований
     ui->tableItems->setColumnCount(2);
     ui->tableItems->setHorizontalHeaderLabels(QStringList() << "Наименование" << "Идентификатор");
     ui->tableItems->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableItems->setSortingEnabled(true);            //включение возможноости сортировки таблицы
+    vectorItems = item->set_vector_of_items();          //создание вектора с помощью соответствующей функции
     fillTable(vectorItems);                             //заполнение таблицы по данным из вектора
     //сокрытие элементов, которые не должны быть активны при начальном запуске окна
     ui->pushButtonEdit->setEnabled(0);
