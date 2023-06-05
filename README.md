@@ -1223,4 +1223,3 @@ void report::on_pushSend_clicked()
 ```
     
 </details>
-<br> 
