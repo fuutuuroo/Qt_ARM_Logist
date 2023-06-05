@@ -114,9 +114,4 @@ QVector<Item> Item::set_vector_of_items() {
     }
     return vectorItems;
 }
-//функция для получения рандомного количества в городах, зависит от сида, в его роли выступит номер строки таблицы
-int Item::get_rand_count(int seed, int min, int max) {
-    qsrand(seed);
-    return (qrand() % ((max + 1) - min) + min);
-}
 

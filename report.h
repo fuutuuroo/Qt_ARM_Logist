@@ -16,6 +16,7 @@ class report : public QDialog
 public:
     explicit report(QWidget *parent = nullptr);
     ~report();
+    QString reportCity;
     QString reportName;
     QString reportID;
     void setInfo();

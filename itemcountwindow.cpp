@@ -27,7 +27,13 @@ QString towns[32] = {   "Москва", "Санкт-Петербург", "Нов
                         "Саратов", "Тюмень", "Тольятти", "Ижевск",
                         "Барнаул", "Иркутск", "Ульяновск", "Хабаровск",
                         "Ярославль", "Владивосток", "Томск", "Оренбург",
-                        "Кемерово", "Новокузнецк", "Рязань", "Астрахань" };
+                        "Кемерово", "Новокузнецк", "Рязань", "Астрахань"
+                    };
+//функция для получения рандомного количества в городах, зависит от сида, в его роли выступит номер строки таблицы
+int ItemCountWindow::get_rand_count(int seed, int min, int max) {
+    qsrand(seed);
+    return (qrand() % ((max + 1) - min) + min);
+}
 
 //функция для заполнения таблицы наличия в городах
 void ItemCountWindow::fillTableCount(int row) {
@@ -42,7 +48,7 @@ void ItemCountWindow::fillTableCount(int row) {
     for (int i = 0; i < sizeTowns; i++) {
         ui->tableItemCount->setItem(i, 0, new QTableWidgetItem(towns[i]));
         //заполнение столбца "Количество" псевдослучайными числами с зависимостью от номера строки
-        ui->tableItemCount->setItem(i, 1, new QTableWidgetItem(QString::number(item->get_rand_count(row + i,0,20))));
+        ui->tableItemCount->setItem(i, 1, new QTableWidgetItem(QString::number(get_rand_count(row + i,0,20))));
     }
     addReport();
 }
@@ -62,8 +68,7 @@ void ItemCountWindow::addReport() {
         }
     }
 }
-
-
+//обработка клика на ячейку таблицы
 void ItemCountWindow::on_tableItemCount_cellClicked(int row, int column)
 {
     QString str;
@@ -75,6 +80,12 @@ void ItemCountWindow::on_tableItemCount_cellClicked(int row, int column)
     //если это измененная ячейка третьего столбца, то открывается новое окно с заявкой
     if (str == "Создать заявку") {
         reportWind = new report(this);
+        QString str;                            //строка для передачи города в окно report
+        QTableWidgetItem *item = ui->tableItemCount->item(row, 0);
+        if (NULL != item) {
+           str = item->text();
+        }
+        reportWind->reportCity = str;
         reportWind->reportName = vectorName;
         reportWind->reportID = vectorID;
         reportWind->setInfo();

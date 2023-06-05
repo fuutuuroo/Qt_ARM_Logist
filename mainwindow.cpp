@@ -38,39 +38,6 @@ void MainWindow::fillTable(QVector<Item> items) {
         ui->tableItems->setItem(i, 1, new QTableWidgetItem(items[i].get_id()));
     }
 }
-//обработка нажатия кнопки "Открыть" при выбранной ячейке таблицы, равносильна двойному клику по ячейку таблицы
-void MainWindow::on_pushButtonOpen_clicked()
-{   //сокрытие кнопок, которые не должны использоваться при открытой записи в таблице
-    ui->lineEdit->setEnabled(0);
-    ui->pbAdd->hide();
-    ui->pbSave->hide();
-    ui->pbDelete->hide();
-    ui->pbCancel->hide();
-    ui->labelAdd->hide();
-    //создание нового окна типа ItemCountWindow и заполнение его информацией
-    itemCountWind = new ItemCountWindow(this);
-    itemCountWind->show();
-    int row = ui->tableItems->currentRow();
-    itemCountWind->vectorName = send_vector_name(row);
-    itemCountWind->vectorID = send_vector_id(row);
-    itemCountWind->fillTableCount(row);
-}
-//обработка двойного клика по ячейке, равносильна нажатию кнопки "Открыть" при выбранной ячейке таблицы
-void MainWindow::on_tableItems_cellDoubleClicked(int row, int column)
-{   //сокрытие кнопок, которые не должны использоваться при открытой записи в таблице
-    ui->lineEdit->setEnabled(0);
-    ui->pbAdd->hide();
-    ui->pbSave->hide();
-    ui->pbDelete->hide();
-    ui->pbCancel->hide();
-    ui->labelAdd->hide();
-    //создание нового окна типа ItemCountWindow и заполнение его информацией
-    itemCountWind = new ItemCountWindow(this);
-    itemCountWind->show();
-    itemCountWind->vectorName = send_vector_name(row);
-    itemCountWind->vectorID = send_vector_id(row);
-    itemCountWind->fillTableCount(row);
-}
 //обработка одинарного клика по ячейке таблицы
 void MainWindow::on_tableItems_cellClicked(int row, int column)
 {
@@ -94,20 +61,6 @@ void MainWindow::on_pushButtonAdd_clicked()
     ui->pbCancel->show();
     ui->pbSave->hide();
     ui->pbDelete->hide();
-}
-//обработка кнопки "Редактировать запись"
-void MainWindow::on_pushButtonEdit_clicked()
-{   //активация строки и необходимых для редактирования кнопок
-    QString str = ui->lineEdit->text();
-    if (str != "") {    //редактирование запустится только если в строке есть содержимое
-        ui->lineEdit->setText(str);
-        ui->lineEdit->setEnabled(1);
-        ui->pbAdd->hide();
-        ui->pbSave->show();
-        ui->pbDelete->show();
-        ui->pbCancel->show();
-        ui->labelAdd->hide();
-    }
 }
 //обработки кнопки "Добавить" при создании новой записи
 void MainWindow::on_pbAdd_clicked()
@@ -144,7 +97,6 @@ void MainWindow::on_pbAdd_clicked()
                 }
             }
         }
-
         temp.set_id(idToAdd);                                   //запись идентификатора в элемент вектора
         vectorItems.append(temp);
         int currentRow = ui->tableItems->rowCount();            //добавление строки в таблицу
@@ -155,6 +107,33 @@ void MainWindow::on_pbAdd_clicked()
         QMessageBox::critical(this, "Некорректная строка!", "Строка пустая или дублирует уже существующую, введите корректную строку!");
     }
 }
+//обработка кнопки "Отмена" при редактировании/добавлении записи
+void MainWindow::on_pbCancel_clicked()
+{
+    ui->lineEdit->clear();
+    ui->lineEdit->setEnabled(0);
+    ui->pbAdd->hide();
+    ui->pbSave->hide();
+    ui->pbDelete->hide();
+    ui->pbCancel->hide();
+    ui->labelAdd->hide();
+
+}
+//обработка кнопки "Редактировать запись"
+void MainWindow::on_pushButtonEdit_clicked()
+{   //активация строки и необходимых для редактирования кнопок
+    QString str = ui->lineEdit->text();
+    if (str != "") {    //редактирование запустится только если в строке есть содержимое
+        ui->lineEdit->setText(str);
+        ui->lineEdit->setEnabled(1);
+        ui->pbAdd->hide();
+        ui->pbSave->show();
+        ui->pbDelete->show();
+        ui->pbCancel->show();
+        ui->labelAdd->hide();
+    }
+}
+
 //обработка кнопки "Сохранить" при редактировании записи
 void MainWindow::on_pbSave_clicked()
 {   //создание QMessageBox для уточнения изменений
@@ -174,7 +153,7 @@ void MainWindow::on_pbSave_clicked()
         }
     }
     //если не сработал флажок И получено подтверждение в окне, запись изменяется в векторе и таблице
-    if (!check_name && res == QMessageBox::Ok) {
+    if (!check_name && res == QMessageBox::Ok && ui->lineEdit->text() != "") {
         int currentRow = ui->tableItems->currentRow();
         vectorItems[currentRow].set_name(nameToEdit);
         ui->tableItems->setItem(currentRow, 0, new QTableWidgetItem(vectorItems[currentRow].get_name()));
@@ -201,18 +180,6 @@ void MainWindow::on_pbDelete_clicked()
     } else {
         msgBox.close();
     }
-}
-//обработка кнопки "Отмена" при редактировании/добавлении записи
-void MainWindow::on_pbCancel_clicked()
-{
-    ui->lineEdit->clear();
-    ui->lineEdit->setEnabled(0);
-    ui->pbAdd->hide();
-    ui->pbSave->hide();
-    ui->pbDelete->hide();
-    ui->pbCancel->hide();
-    ui->labelAdd->hide();
-
 }
 //реализация поиска по наименованию по части строки
 void MainWindow::on_lineName_textChanged(const QString &str)
@@ -262,5 +229,37 @@ QString MainWindow::send_vector_name(int i) {
 QString MainWindow::send_vector_id(int i) {
     return vectorItems[i].get_id();
 }
-
+//обработка нажатия кнопки "Открыть" при выбранной ячейке таблицы, равносильна двойному клику по ячейку таблицы
+void MainWindow::on_pushButtonOpen_clicked()
+{   //сокрытие кнопок, которые не должны использоваться при открытой записи в таблице
+    ui->lineEdit->setEnabled(0);
+    ui->pbAdd->hide();
+    ui->pbSave->hide();
+    ui->pbDelete->hide();
+    ui->pbCancel->hide();
+    ui->labelAdd->hide();
+    //создание нового окна типа ItemCountWindow и заполнение его информацией
+    itemCountWind = new ItemCountWindow(this);
+    itemCountWind->show();
+    int row = ui->tableItems->currentRow();
+    itemCountWind->vectorName = send_vector_name(row);
+    itemCountWind->vectorID = send_vector_id(row);
+    itemCountWind->fillTableCount(row);
+}
+//обработка двойного клика по ячейке, равносильна нажатию кнопки "Открыть" при выбранной ячейке таблицы
+void MainWindow::on_tableItems_cellDoubleClicked(int row, int column)
+{   //сокрытие кнопок, которые не должны использоваться при открытой записи в таблице
+    ui->lineEdit->setEnabled(0);
+    ui->pbAdd->hide();
+    ui->pbSave->hide();
+    ui->pbDelete->hide();
+    ui->pbCancel->hide();
+    ui->labelAdd->hide();
+    //создание нового окна типа ItemCountWindow и заполнение его информацией
+    itemCountWind = new ItemCountWindow(this);
+    itemCountWind->show();
+    itemCountWind->vectorName = send_vector_name(row);
+    itemCountWind->vectorID = send_vector_id(row);
+    itemCountWind->fillTableCount(row);
+}
 

@@ -39,9 +39,7 @@ private:
     ItemCountWindow *itemCountWind;
     QMessageBox msgBox;
     Item *item;
-
     QVector<Item> vectorItems;
-
     QString send_vector_name(int);
     QString send_vector_id(int);
 };

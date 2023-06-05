@@ -26,9 +26,9 @@ private slots:
 
 private:
     Ui::ItemCountWindow *ui;
-    Item *item;
     report *reportWind;
     void addReport();
+    int get_rand_count(int, int, int);
 
 };
 

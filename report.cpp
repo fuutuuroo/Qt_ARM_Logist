@@ -12,19 +12,26 @@ report::~report()
 {
     delete ui;
 }
-
-void report::on_pushSend_clicked()      //кнопка отправки
-{
-    QMessageBox::information(this, "Информация", "Заявка была успешно отправлена!");
-    close();
-}
-
 void report::on_pushClose_clicked()     //кнопка закрытия
 {
     close();
 }
-
-void report::setInfo() {                //функция для записи информации в лэйблы
+//функция для записи информации в лэйблы
+void report::setInfo() {
+    ui->labelCity->setText(reportCity);
     ui->labelName->setText(reportName);
     ui->labelID->setText("id: " + reportID);
 }
+//кнопка отправки
+void report::on_pushSend_clicked()
+{
+    if (ui->lineEditCount->text() != "") {
+        QMessageBox::information(this, "Информация", "Заявка была успешно отправлена!");
+        close();
+    } else {
+        QMessageBox::critical(this, "Пустая строка", "Введите корректное количество товара!");
+    }
+}
+
+
+

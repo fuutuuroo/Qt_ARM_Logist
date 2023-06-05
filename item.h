@@ -21,7 +21,7 @@ public:
     void set_name(QString);
     void set_id(QString);
     int get_size();
-    int get_rand_count(int, int, int);
+
     QVector<Item> set_vector_of_items();
 
 };
