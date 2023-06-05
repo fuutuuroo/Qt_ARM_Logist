@@ -32,6 +32,3 @@ void report::on_pushSend_clicked()
         QMessageBox::critical(this, "Пустая строка", "Введите корректное количество товара!");
     }
 }
-
-
-

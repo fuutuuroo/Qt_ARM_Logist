@@ -262,4 +262,3 @@ void MainWindow::on_tableItems_cellDoubleClicked(int row, int column)
     itemCountWind->vectorID = send_vector_id(row);
     itemCountWind->fillTableCount(row);
 }
-
