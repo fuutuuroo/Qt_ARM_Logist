@@ -61,7 +61,7 @@ public:
     void set_name(QString);
     void set_id(QString);
     int get_size();
-    int get_rand_count(int, int, int);
+
     QVector<Item> set_vector_of_items();
 
 };
@@ -115,9 +115,7 @@ private:
     ItemCountWindow *itemCountWind;
     QMessageBox msgBox;
     Item *item;
-
     QVector<Item> vectorItems;
-
     QString send_vector_name(int);
     QString send_vector_id(int);
 };
@@ -158,9 +156,9 @@ private slots:
 
 private:
     Ui::ItemCountWindow *ui;
-    Item *item;
     report *reportWind;
     void addReport();
+    int get_rand_count(int, int, int);
 
 };
 
@@ -190,6 +188,7 @@ class report : public QDialog
 public:
     explicit report(QWidget *parent = nullptr);
     ~report();
+    QString reportCity;
     QString reportName;
     QString reportID;
     void setInfo();
@@ -348,11 +347,6 @@ QVector<Item> Item::set_vector_of_items() {
     }
     return vectorItems;
 }
-//функция для получения рандомного количества в городах, зависит от сида, в его роли выступит номер строки таблицы
-int Item::get_rand_count(int seed, int min, int max) {
-    qsrand(seed);
-    return (qrand() % ((max + 1) - min) + min);
-}
 ```
     
 </details>
@@ -400,39 +394,6 @@ void MainWindow::fillTable(QVector<Item> items) {
         ui->tableItems->setItem(i, 1, new QTableWidgetItem(items[i].get_id()));
     }
 }
-//обработка нажатия кнопки "Открыть" при выбранной ячейке таблицы, равносильна двойному клику по ячейку таблицы
-void MainWindow::on_pushButtonOpen_clicked()
-{   //сокрытие кнопок, которые не должны использоваться при открытой записи в таблице
-    ui->lineEdit->setEnabled(0);
-    ui->pbAdd->hide();
-    ui->pbSave->hide();
-    ui->pbDelete->hide();
-    ui->pbCancel->hide();
-    ui->labelAdd->hide();
-    //создание нового окна типа ItemCountWindow и заполнение его информацией
-    itemCountWind = new ItemCountWindow(this);
-    itemCountWind->show();
-    int row = ui->tableItems->currentRow();
-    itemCountWind->vectorName = send_vector_name(row);
-    itemCountWind->vectorID = send_vector_id(row);
-    itemCountWind->fillTableCount(row);
-}
-//обработка двойного клика по ячейке, равносильна нажатию кнопки "Открыть" при выбранной ячейке таблицы
-void MainWindow::on_tableItems_cellDoubleClicked(int row, int column)
-{   //сокрытие кнопок, которые не должны использоваться при открытой записи в таблице
-    ui->lineEdit->setEnabled(0);
-    ui->pbAdd->hide();
-    ui->pbSave->hide();
-    ui->pbDelete->hide();
-    ui->pbCancel->hide();
-    ui->labelAdd->hide();
-    //создание нового окна типа ItemCountWindow и заполнение его информацией
-    itemCountWind = new ItemCountWindow(this);
-    itemCountWind->show();
-    itemCountWind->vectorName = send_vector_name(row);
-    itemCountWind->vectorID = send_vector_id(row);
-    itemCountWind->fillTableCount(row);
-}
 //обработка одинарного клика по ячейке таблицы
 void MainWindow::on_tableItems_cellClicked(int row, int column)
 {
@@ -456,20 +417,6 @@ void MainWindow::on_pushButtonAdd_clicked()
     ui->pbCancel->show();
     ui->pbSave->hide();
     ui->pbDelete->hide();
-}
-//обработка кнопки "Редактировать запись"
-void MainWindow::on_pushButtonEdit_clicked()
-{   //активация строки и необходимых для редактирования кнопок
-    QString str = ui->lineEdit->text();
-    if (str != "") {    //редактирование запустится только если в строке есть содержимое
-        ui->lineEdit->setText(str);
-        ui->lineEdit->setEnabled(1);
-        ui->pbAdd->hide();
-        ui->pbSave->show();
-        ui->pbDelete->show();
-        ui->pbCancel->show();
-        ui->labelAdd->hide();
-    }
 }
 //обработки кнопки "Добавить" при создании новой записи
 void MainWindow::on_pbAdd_clicked()
@@ -506,7 +453,6 @@ void MainWindow::on_pbAdd_clicked()
                 }
             }
         }
-
         temp.set_id(idToAdd);                                   //запись идентификатора в элемент вектора
         vectorItems.append(temp);
         int currentRow = ui->tableItems->rowCount();            //добавление строки в таблицу
@@ -517,6 +463,33 @@ void MainWindow::on_pbAdd_clicked()
         QMessageBox::critical(this, "Некорректная строка!", "Строка пустая или дублирует уже существующую, введите корректную строку!");
     }
 }
+//обработка кнопки "Отмена" при редактировании/добавлении записи
+void MainWindow::on_pbCancel_clicked()
+{
+    ui->lineEdit->clear();
+    ui->lineEdit->setEnabled(0);
+    ui->pbAdd->hide();
+    ui->pbSave->hide();
+    ui->pbDelete->hide();
+    ui->pbCancel->hide();
+    ui->labelAdd->hide();
+
+}
+//обработка кнопки "Редактировать запись"
+void MainWindow::on_pushButtonEdit_clicked()
+{   //активация строки и необходимых для редактирования кнопок
+    QString str = ui->lineEdit->text();
+    if (str != "") {    //редактирование запустится только если в строке есть содержимое
+        ui->lineEdit->setText(str);
+        ui->lineEdit->setEnabled(1);
+        ui->pbAdd->hide();
+        ui->pbSave->show();
+        ui->pbDelete->show();
+        ui->pbCancel->show();
+        ui->labelAdd->hide();
+    }
+}
+
 //обработка кнопки "Сохранить" при редактировании записи
 void MainWindow::on_pbSave_clicked()
 {   //создание QMessageBox для уточнения изменений
@@ -536,7 +509,7 @@ void MainWindow::on_pbSave_clicked()
         }
     }
     //если не сработал флажок И получено подтверждение в окне, запись изменяется в векторе и таблице
-    if (!check_name && res == QMessageBox::Ok) {
+    if (!check_name && res == QMessageBox::Ok && ui->lineEdit->text() != "") {
         int currentRow = ui->tableItems->currentRow();
         vectorItems[currentRow].set_name(nameToEdit);
         ui->tableItems->setItem(currentRow, 0, new QTableWidgetItem(vectorItems[currentRow].get_name()));
@@ -563,18 +536,6 @@ void MainWindow::on_pbDelete_clicked()
     } else {
         msgBox.close();
     }
-}
-//обработка кнопки "Отмена" при редактировании/добавлении записи
-void MainWindow::on_pbCancel_clicked()
-{
-    ui->lineEdit->clear();
-    ui->lineEdit->setEnabled(0);
-    ui->pbAdd->hide();
-    ui->pbSave->hide();
-    ui->pbDelete->hide();
-    ui->pbCancel->hide();
-    ui->labelAdd->hide();
-
 }
 //реализация поиска по наименованию по части строки
 void MainWindow::on_lineName_textChanged(const QString &str)
@@ -624,6 +585,39 @@ QString MainWindow::send_vector_name(int i) {
 QString MainWindow::send_vector_id(int i) {
     return vectorItems[i].get_id();
 }
+//обработка нажатия кнопки "Открыть" при выбранной ячейке таблицы, равносильна двойному клику по ячейку таблицы
+void MainWindow::on_pushButtonOpen_clicked()
+{   //сокрытие кнопок, которые не должны использоваться при открытой записи в таблице
+    ui->lineEdit->setEnabled(0);
+    ui->pbAdd->hide();
+    ui->pbSave->hide();
+    ui->pbDelete->hide();
+    ui->pbCancel->hide();
+    ui->labelAdd->hide();
+    //создание нового окна типа ItemCountWindow и заполнение его информацией
+    itemCountWind = new ItemCountWindow(this);
+    itemCountWind->show();
+    int row = ui->tableItems->currentRow();
+    itemCountWind->vectorName = send_vector_name(row);
+    itemCountWind->vectorID = send_vector_id(row);
+    itemCountWind->fillTableCount(row);
+}
+//обработка двойного клика по ячейке, равносильна нажатию кнопки "Открыть" при выбранной ячейке таблицы
+void MainWindow::on_tableItems_cellDoubleClicked(int row, int column)
+{   //сокрытие кнопок, которые не должны использоваться при открытой записи в таблице
+    ui->lineEdit->setEnabled(0);
+    ui->pbAdd->hide();
+    ui->pbSave->hide();
+    ui->pbDelete->hide();
+    ui->pbCancel->hide();
+    ui->labelAdd->hide();
+    //создание нового окна типа ItemCountWindow и заполнение его информацией
+    itemCountWind = new ItemCountWindow(this);
+    itemCountWind->show();
+    itemCountWind->vectorName = send_vector_name(row);
+    itemCountWind->vectorID = send_vector_id(row);
+    itemCountWind->fillTableCount(row);
+}
 ```
     
 </details>
@@ -660,7 +654,13 @@ QString towns[32] = {   "Москва", "Санкт-Петербург", "Нов
                         "Саратов", "Тюмень", "Тольятти", "Ижевск",
                         "Барнаул", "Иркутск", "Ульяновск", "Хабаровск",
                         "Ярославль", "Владивосток", "Томск", "Оренбург",
-                        "Кемерово", "Новокузнецк", "Рязань", "Астрахань" };
+                        "Кемерово", "Новокузнецк", "Рязань", "Астрахань"
+                    };
+//функция для получения рандомного количества в городах, зависит от сида, в его роли выступит номер строки таблицы
+int ItemCountWindow::get_rand_count(int seed, int min, int max) {
+    qsrand(seed);
+    return (qrand() % ((max + 1) - min) + min);
+}
 
 //функция для заполнения таблицы наличия в городах
 void ItemCountWindow::fillTableCount(int row) {
@@ -675,7 +675,7 @@ void ItemCountWindow::fillTableCount(int row) {
     for (int i = 0; i < sizeTowns; i++) {
         ui->tableItemCount->setItem(i, 0, new QTableWidgetItem(towns[i]));
         //заполнение столбца "Количество" псевдослучайными числами с зависимостью от номера строки
-        ui->tableItemCount->setItem(i, 1, new QTableWidgetItem(QString::number(item->get_rand_count(row + i,0,20))));
+        ui->tableItemCount->setItem(i, 1, new QTableWidgetItem(QString::number(get_rand_count(row + i,0,20))));
     }
     addReport();
 }
@@ -695,8 +695,7 @@ void ItemCountWindow::addReport() {
         }
     }
 }
-
-
+//обработка клика на ячейку таблицы
 void ItemCountWindow::on_tableItemCount_cellClicked(int row, int column)
 {
     QString str;
@@ -708,6 +707,12 @@ void ItemCountWindow::on_tableItemCount_cellClicked(int row, int column)
     //если это измененная ячейка третьего столбца, то открывается новое окно с заявкой
     if (str == "Создать заявку") {
         reportWind = new report(this);
+        QString str;                            //строка для передачи города в окно report
+        QTableWidgetItem *item = ui->tableItemCount->item(row, 0);
+        if (NULL != item) {
+           str = item->text();
+        }
+        reportWind->reportCity = str;
         reportWind->reportName = vectorName;
         reportWind->reportID = vectorID;
         reportWind->setInfo();
@@ -735,21 +740,25 @@ report::~report()
 {
     delete ui;
 }
-
-void report::on_pushSend_clicked()      //кнопка отправки
-{
-    QMessageBox::information(this, "Информация", "Заявка была успешно отправлена!");
-    close();
-}
-
 void report::on_pushClose_clicked()     //кнопка закрытия
 {
     close();
 }
-
-void report::setInfo() {                //функция для записи информации в лэйблы
+//функция для записи информации в лэйблы
+void report::setInfo() {
+    ui->labelCity->setText(reportCity);
     ui->labelName->setText(reportName);
     ui->labelID->setText("id: " + reportID);
+}
+//кнопка отправки
+void report::on_pushSend_clicked()
+{
+    if (ui->lineEditCount->text() != "") {
+        QMessageBox::information(this, "Информация", "Заявка была успешно отправлена!");
+        close();
+    } else {
+        QMessageBox::critical(this, "Пустая строка", "Введите корректное количество товара!");
+    }
 }
 ```
     
@@ -769,8 +778,8 @@ void report::setInfo() {                //функция для записи и�
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>750</height>
+    <width>700</width>
+    <height>1000</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1019,7 +1028,7 @@ void report::setInfo() {                //функция для записи и�
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>600</height>
+    <height>900</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1085,11 +1094,39 @@ void report::setInfo() {                //функция для записи и�
     <widget class="QLabel" name="labelHead">
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>16</pointsize>
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Заявка в отдел закупки&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Заявка в отдел закупок&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>30</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelCity">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Город</string>
      </property>
     </widget>
    </item>
