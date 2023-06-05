@@ -31,7 +31,7 @@
 # Диаграмма классов
 ![ARM_Logist](https://github.com/fuutuuroo/Qt_ARM_Logist/assets/85291734/5dd0580c-10e7-403e-8697-c717c5f09a18)
 # Ссылка на видеоролик 
-[ссылка](https://youtu.be/O6twRPTyJvU)
+[Qt Study Project - Logist - Solodov A.A.](https://youtu.be/O6twRPTyJvU)
 # Cтруктурированный исходный код проекта с подробными комментариями
 ### Заголовочные файлы
 
